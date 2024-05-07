@@ -78,6 +78,14 @@ jobs:
         if: (!cancelled())
         uses: docker/setup-buildx-action@v3
 
+      - name: Upload Docker image to actions artifacts
+        id: upload
+        if: ${{ steps.make.outputs.status }} == 'success' && !cancelled()
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: ${{ env.DOCKER_OUTPATH }}
+
       - name: Login to Docker Hub
         id: login
         if: (!cancelled())
